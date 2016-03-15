@@ -21,7 +21,15 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.tabs.query({currentWindow: true, active: false, pinned: false}, function(tabs){
         for (var i = 0; i < tabs.length; i++) {
             if (extractDomain(tabs[i].url)==curr_domain){
-                chrome.tabs.remove(tabs[i].id);
+                // url=tabs[i].url;
+                chrome.tabs.remove(tabs[i].id,function(i)
+                    {
+                        return function()
+                        {
+                            console.log(tabs[i].url+" closed...");
+                        };
+                    }(i)
+                );
             }
         }
     });
